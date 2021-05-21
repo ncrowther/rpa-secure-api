@@ -1,0 +1,135 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: RPA API
+  description: The purpose of this API is to present a well defined interface to invoke any bot script.  It  enforces authentication and allows loopback to simulate executing a RPA bot when an RPA environment is not available
+  contact:
+    email: ncrowther@uk.ibm.com
+host: rpapi.eu-gb.mybluemix.net
+basePath: /
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
+securityDefinitions:
+  basicAuth:
+    type: basic
+# Apply Basic auth to the whole API:
+security:
+  - basicAuth: []
+paths:
+  /run:
+    post:
+      description: Runs a script on a RPA agent specified in the URL
+      summary: script
+      tags:
+      - RPA API
+      operationId: runScript
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: script
+        in: query
+        required: true
+        type: string
+        description: Bot script name to run.  This script must be published on the tenant belonging to the host
+      - name: host
+        in: query
+        required: true
+        type: string
+        description: URL of the RPA agent. If host is LOOPBACK then 202 always returned to simulate a succesful bot run.  If host is a URL, it must point to an RPA agent.  It can point to either port 8099 (Direct) or 8096 (Broker). Script parameters are passed in the body.  See documentation https://www.ibm.com/docs/en/rpa/20.12?topic=bot-starting-bots-by-api-ca for more details
+      - name: unlockMachine
+        in: query
+        required: true
+        type: string
+        description: True if unlock False otherwise
+      - $ref: '#/parameters/RequestBody'
+      responses:
+        '202':
+          $ref: '#/definitions/SuccessResponse'
+        '400':
+          $ref: '#/definitions/BadRequestResponse'
+        '404':
+          $ref: '#/definitions/NotFoundResponse'
+parameters:
+  RequestBody:
+    name: RequestBody
+    in: body
+    description: Default
+    required: true
+    schema:
+      $ref: '#/definitions/RequestBodySchema'
+
+definitions:
+  SuccessResponse:
+    title: SuccessResponse
+    type: object
+    description: Success Response
+    properties:
+      out_code:
+        type: integer
+        format: int32
+        description: zero for success, negative for failure
+        example: 0
+      out_type:
+        type: string
+        description: Type of response. Either SUCCESS or FAIL
+        example: SUCCESS
+      out_message:
+        type: string
+        description: Description of response
+        example: OK
+  BadRequestResponse:
+    title: BadRequestResponse
+    type: object
+    description: Bad Request Response
+    properties:
+      out_code:
+        type: integer
+        format: int32
+        description: zero for success, negative for failure
+        example: -1
+      out_type:
+        type: string
+        description: Type of response. Either SUCCESS or FAIL
+        example: FAIL
+      out_message:
+        type: string
+        description: Description of failure
+        example: Missing Parameter
+  NotFoundResponse:
+    title: NotFoundResponse
+    type: object
+    description: Not Found Response
+    properties:
+      out_code:
+        type: integer
+        format: int32
+        description: zero for success, negative for failure
+        example: -1
+      out_type:
+        type: string
+        description: Type of response. Either SUCCESS or FAIL
+        example: FAIL
+      out_message:
+        type: string
+        description: Description of failure
+        example: RPA Server not found
+
+
+  RequestBodySchema:
+    description: Script Parameters
+    type: object
+
+tags:
+- name: IBM RPA API
+  description: Executes scripts on specified RPA agents
+  externalDocs:
+    url: http://localhost:8080/docs
+    description: Find out more
+externalDocs:
+  url: http://swagger.io
+  description: Find out more about Swagger

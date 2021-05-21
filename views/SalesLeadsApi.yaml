@@ -1,0 +1,355 @@
+$integration: http://ibm.com/appconnect/integration/v2/integrationFile
+integration:
+  type: trigger-action
+  trigger-interfaces:
+    trigger-interface-1:
+      type: event-trigger
+      triggers:
+        SCHEDULE:
+          input-context:
+            data: scheduler
+          assembly:
+            $ref: '#/integration/assemblies/assembly-1'
+          options:
+            subscription:
+              scheduleConfiguration:
+                interval:
+                  unit: hour
+                  value: 23
+                  runOnceOncheck: true
+                  days:
+                    - SUN
+                  timeZone: UTC
+      connector-type: streaming-connector-scheduler
+      account-name: Account 1
+  action-interfaces:
+    action-interface-3:
+      type: api-action
+      business-object: document
+      connector-type: cloudantdb
+      actions:
+        RETRIEVEALL: {}
+      account-name: Account 1
+    action-interface-1:
+      type: api-action
+      business-object: document
+      connector-type: cloudantdb
+      account-name: Account 1
+      actions:
+        UPDATEALL: {}
+    action-interface-2:
+      type: api-action
+      business-object: runScript_model
+      connector-type: UDA.jf86uopdh.openapi.RPA_API4
+      account-name: Account 1
+      actions:
+        runScript: {}
+  assemblies:
+    assembly-1:
+      assembly:
+        execute:
+          - retrieve-action:
+              name: IBM Cloudant Retrieve documents
+              target:
+                $ref: '#/integration/action-interfaces/action-interface-3'
+              filter:
+                where:
+                  db_name: salesleads
+                input:
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                limit: 10
+              allow-truncation: true
+              pagination-type: SKIP_LIMIT
+              allow-empty-output: true
+          - for-each:
+              name: For each
+              assembly:
+                $ref: '#/integration/assemblies/assembly-2'
+              source:
+                expression: '$IBMCloudantRetrievedocuments '
+                input:
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: IBMCloudantRetrievedocuments
+                    $ref: >-
+                      #/node-output/IBM Cloudant Retrieve
+                      documents/response/payload
+                  - variable: IBMCloudantRetrievedocumentsMetadata
+                    $ref: '#/node-output/IBM Cloudant Retrieve documents/response'
+              mode: sequential
+              continue-on-error: true
+              map:
+                $map: http://ibm.com/appconnect/map/v1
+                input:
+                  - variable: Foreachitem
+                    $ref: '#/block/For each/current-item'
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: JSONParserParse
+                    $ref: >-
+                      #/block/For each/node-output/JSON Parser
+                      Parse/response/payload
+                  - variable: RPAAPIPOSTrun
+                    $ref: >-
+                      #/block/For each/node-output/RPA_API POST
+                      run/response/payload
+                  - variable: RPAAPIPOSTrunMetadata
+                    $ref: '#/block/For each/node-output/RPA_API POST run/response'
+                  - variable: SalesLeadsAPIPOSTscriptssalesleadautomationAPI
+                    $ref: >-
+                      #/block/For each/node-output/SalesLeadsAPI POST scripts
+                      sales_lead_automation_API/response/payload
+                  - variable: SalesLeadsAPIPOSTscriptssalesleadautomationAPIMetadata
+                    $ref: >-
+                      #/block/For each/node-output/SalesLeadsAPI POST scripts
+                      sales_lead_automation_API/response
+                  - variable: IBMCloudantUpdatedocument2
+                    $ref: >-
+                      #/block/For each/node-output/IBM Cloudant Update document
+                      2/response/payload
+                  - variable: IBMCloudantUpdatedocument2Metadata
+                    $ref: >-
+                      #/block/For each/node-output/IBM Cloudant Update document
+                      2/response
+                  - variable: IBMCloudantRetrievedocuments
+                    $ref: >-
+                      #/node-output/IBM Cloudant Retrieve
+                      documents/response/payload
+                  - variable: IBMCloudantRetrievedocumentsMetadata
+                    $ref: '#/node-output/IBM Cloudant Retrieve documents/response'
+                mappings:
+                  - output:
+                      expression: '$Foreachitem.data '
+              display-name: IBM Cloudant document
+          - logging:
+              name: Log
+              map:
+                $map: http://ibm.com/appconnect/map/v1
+                input:
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: IBMCloudantRetrievedocuments
+                    $ref: >-
+                      #/node-output/IBM Cloudant Retrieve
+                      documents/response/payload
+                  - variable: IBMCloudantRetrievedocumentsMetadata
+                    $ref: '#/node-output/IBM Cloudant Retrieve documents/response'
+                  - variable: Foreach
+                    $ref: '#/node-output/For each/response/payload'
+                mappings:
+                  - logLevel:
+                      template: Info
+                  - logMessage:
+                      template: Processing complete
+    assembly-2:
+      assembly:
+        execute:
+          - parse:
+              name: JSON Parser Parse
+              parse-format: json
+              source:
+                template: '{{$Foreachitem.data}}'
+                input:
+                  - variable: Foreachitem
+                    $ref: '#/block/For each/current-item'
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: IBMCloudantRetrievedocuments
+                    $ref: >-
+                      #/node-output/IBM Cloudant Retrieve
+                      documents/response/payload
+                  - variable: IBMCloudantRetrievedocumentsMetadata
+                    $ref: '#/node-output/IBM Cloudant Retrieve documents/response'
+              sample-data: |-
+                {
+                  "_id": "28eb67f1e89deb5a058758433d36c446",
+                  "first_name": "Ned",
+                  "last_name": "Flanders",
+                  "job_title": "IT Support", 
+                  "company": "IBM", 
+                  "email": "ned@ibm.com",
+                  "phone": "87898977", 
+                  "client_address": "101 Acasia Av", 
+                  "client_city": "Springfield",
+                  "client_zipcode": "786786",
+                  "interest": "8",
+                  "followup": "Yes",
+                  "client_state": "North Carolina"
+                }
+              output-schema:
+                $schema: http://json-schema.org/draft-04/schema#
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  job_title:
+                    type: string
+                  company:
+                    type: string
+                  email:
+                    type: string
+                  phone:
+                    type: string
+                  client_address:
+                    type: string
+                  client_city:
+                    type: string
+                  client_zipcode:
+                    type: string
+                  interest:
+                    type: string
+                  followup:
+                    type: string
+                  client_state:
+                    type: string
+                title: Parsed JSON
+          - custom-action:
+              name: RPA_API4 POST run
+              target:
+                $ref: '#/integration/action-interfaces/action-interface-2'
+              action: runScript
+              map:
+                mappings:
+                  - RequestBody:
+                      expression: '$JSONParserParse '
+                  - api_key:
+                      template: '123456'
+                  - host:
+                      template: LOOPBACK
+                  - script:
+                      template: sales_lead_automation_API
+                  - unlockMachine:
+                      template: 'False'
+                $map: http://ibm.com/appconnect/map/v1
+                input:
+                  - variable: Foreachitem
+                    $ref: '#/block/For each/current-item'
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: JSONParserParse
+                    $ref: >-
+                      #/block/For each/node-output/JSON Parser
+                      Parse/response/payload
+                  - variable: IBMCloudantRetrievedocuments
+                    $ref: >-
+                      #/node-output/IBM Cloudant Retrieve
+                      documents/response/payload
+                  - variable: IBMCloudantRetrievedocumentsMetadata
+                    $ref: '#/node-output/IBM Cloudant Retrieve documents/response'
+          - parse:
+              name: JSON Parser Parse 2
+              parse-format: json
+              source:
+                template: '{{$RPAAPI4POSTrun.response."202"}}'
+                input:
+                  - variable: Foreachitem
+                    $ref: '#/block/For each/current-item'
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: JSONParserParse
+                    $ref: >-
+                      #/block/For each/node-output/JSON Parser
+                      Parse/response/payload
+                  - variable: RPAAPI4POSTrun
+                    $ref: >-
+                      #/block/For each/node-output/RPA_API4 POST
+                      run/response/payload
+                  - variable: RPAAPI4POSTrunMetadata
+                    $ref: '#/block/For each/node-output/RPA_API4 POST run/response'
+                  - variable: IBMCloudantRetrievedocuments
+                    $ref: >-
+                      #/node-output/IBM Cloudant Retrieve
+                      documents/response/payload
+                  - variable: IBMCloudantRetrievedocumentsMetadata
+                    $ref: '#/node-output/IBM Cloudant Retrieve documents/response'
+              sample-data: |-
+                {
+                    "out_code": 0,
+                    "out_type": "SUCCESS",
+                    "out_message": "Loopback OK"
+                }
+              output-schema:
+                $schema: http://json-schema.org/draft-04/schema#
+                type: object
+                properties:
+                  out_code:
+                    type: number
+                  out_type:
+                    type: string
+                  out_message:
+                    type: string
+                title: Parsed JSON
+          - update-action:
+              name: IBM Cloudant Update document 2
+              target:
+                $ref: '#/integration/action-interfaces/action-interface-1'
+              map:
+                mappings:
+                  - data:
+                      expression: ' {"first_name": $JSONParserParse.first_name ,  "last_name": $JSONParserParse.last_name ,  "job_title": $JSONParserParse.job_title ,  "company": $JSONParserParse.company ,  "email": $JSONParserParse.email ,  "phone": $JSONParserParse.phone ,  "client_address":  $JSONParserParse.client_address ,  "client_city": $JSONParserParse.client_city ,  "client_zipcode": $JSONParserParse.client_zipcode ,  "interest": $JSONParserParse.interest ,  "followup": $JSONParserParse.followup ,  "client_state": $JSONParserParse.client_state , "out_code": $JSONParserParse2.out_code, "out_type":  $JSONParserParse2.out_type, "out_message":$JSONParserParse2.out_message   }'
+                  - db_name:
+                      template: salesleads
+                $map: http://ibm.com/appconnect/map/v1
+                input:
+                  - variable: Foreachitem
+                    $ref: '#/block/For each/current-item'
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: JSONParserParse
+                    $ref: >-
+                      #/block/For each/node-output/JSON Parser
+                      Parse/response/payload
+                  - variable: RPAAPI4POSTrun
+                    $ref: >-
+                      #/block/For each/node-output/RPA_API4 POST
+                      run/response/payload
+                  - variable: RPAAPI4POSTrunMetadata
+                    $ref: '#/block/For each/node-output/RPA_API4 POST run/response'
+                  - variable: JSONParserParse2
+                    $ref: >-
+                      #/block/For each/node-output/JSON Parser Parse
+                      2/response/payload
+                  - variable: IBMCloudantRetrievedocuments
+                    $ref: >-
+                      #/node-output/IBM Cloudant Retrieve
+                      documents/response/payload
+                  - variable: IBMCloudantRetrievedocumentsMetadata
+                    $ref: '#/node-output/IBM Cloudant Retrieve documents/response'
+              filter:
+                where:
+                  and:
+                    - _id: '{{$Foreachitem._id}}'
+                    - db_name: salesleads
+                input:
+                  - variable: Foreachitem
+                    $ref: '#/block/For each/current-item'
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: JSONParserParse
+                    $ref: >-
+                      #/block/For each/node-output/JSON Parser
+                      Parse/response/payload
+                  - variable: RPAAPI4POSTrun
+                    $ref: >-
+                      #/block/For each/node-output/RPA_API4 POST
+                      run/response/payload
+                  - variable: RPAAPI4POSTrunMetadata
+                    $ref: '#/block/For each/node-output/RPA_API4 POST run/response'
+                  - variable: JSONParserParse2
+                    $ref: >-
+                      #/block/For each/node-output/JSON Parser Parse
+                      2/response/payload
+                  - variable: IBMCloudantRetrievedocuments
+                    $ref: >-
+                      #/node-output/IBM Cloudant Retrieve
+                      documents/response/payload
+                  - variable: IBMCloudantRetrievedocumentsMetadata
+                    $ref: '#/node-output/IBM Cloudant Retrieve documents/response'
+              allow-empty-output: true
+  name: SalesLeadsRPA
+models: {}
