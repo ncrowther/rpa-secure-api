@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   version: '1.0.0'
   title: RPA API
-  description: The purpose of this API is to present a well defined interface to invoke any bot script.  It  enforces authentication and allows loopback to simulate executing a RPA bot when an RPA environment is not available
+  description: The purpose of this API is to present an authenticated interface to invoke any bot script.  It  enforces authentication and allows loopback to simulate executing a RPA bot when an RPA environment is not available
   contact:
     email: ncrowther@uk.ibm.com
 host: rpapi.eu-gb.mybluemix.net
@@ -22,7 +22,7 @@ security:
 paths:
   /run:
     post:
-      description: Runs a script on a RPA agent specified in the URL
+      description: Runs a script on a RPA agent specified in the URL.  All requests are authenticated using Basic Auth.  These credentials are validated against an LDAP server
       summary: script
       tags:
       - RPA API
@@ -40,7 +40,7 @@ paths:
         in: query
         required: true
         type: string
-        description: URL of the RPA agent. If host is LOOPBACK then 202 always returned to simulate a succesful bot run.  If host is a URL, it must point to an RPA agent.  It can point to either port 8099 (Direct) or 8096 (Broker). Script parameters are passed in the body.  See documentation https://www.ibm.com/docs/en/rpa/20.12?topic=bot-starting-bots-by-api-ca for more details
+        description: URL of the RPA agent. If host is LOOPBACK then 202 always returned to simulate a succesful bot run.  If host is a URL, it must point to an RPA agent.  It can point to either port 8099 (Direct) or 8096 (Broker). Script parameters are passed in the request body.  See documentation https://www.ibm.com/docs/en/rpa/20.12?topic=bot-starting-bots-by-api-ca for more details
       - name: unlockMachine
         in: query
         required: true
@@ -122,6 +122,7 @@ definitions:
 
   RequestBodySchema:
     description: Script Parameters
+    example: "{\n\tinputParameterName: inputParameterValue\n}"
     type: object
 
 tags:
