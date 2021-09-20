@@ -1,0 +1,482 @@
+{
+	"info": {
+		"_postman_id": "8949703f-9470-49a7-b185-596f5a278d80",
+		"name": "RPA Gateway API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "InvokeJKAutomation",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "1234567",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "api_key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"Ned\",\r\n    \"last_name\": \"Flanders\",\r\n    \"job_title\": \"IT\",\r\n    \"company\": \"IBM\",\r\n    \"client_address\": \"44 Neuse Road\",\r\n    \"client_city\": \"Springfield\",\r\n    \"client_state\": \"NC\",\r\n    \"interest\": \"0\",\r\n    \"followup\": \"Y\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://5b05a7f57cc4.ngrok.io/scripts/sales_lead_automation_api?unlockMachine=False&rpa_api_key_param=tesla",
+					"protocol": "https",
+					"host": [
+						"5b05a7f57cc4",
+						"ngrok",
+						"io"
+					],
+					"path": [
+						"scripts",
+						"sales_lead_automation_api"
+					],
+					"query": [
+						{
+							"key": "unlockMachine",
+							"value": "False"
+						},
+						{
+							"key": "rpa_api_key_param",
+							"value": "tesla"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RPAForwarderRemote",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "nedflanders",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Porker01!",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"Ned\",\r\n    \"last_name\": \"Flanders\",\r\n    \"job_title\": \"IT\",\r\n    \"company\": \"IBM\",\r\n    \"client_address\": \"44 Neuse Road\",\r\n    \"client_city\": \"Springfield\",\r\n    \"client_state\": \"NC\",\r\n    \"interest\": \"RPA\",\r\n    \"followup\": \"Y\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rpapi.eu-gb.mybluemix.net/runasync?mode=INVOKE&host=https://5b05a7f57cc4.ngrok.io&script=sales_lead_automation_API&unlockMachine=False",
+					"protocol": "https",
+					"host": [
+						"rpapi",
+						"eu-gb",
+						"mybluemix",
+						"net"
+					],
+					"path": [
+						"runasync"
+					],
+					"query": [
+						{
+							"key": "mode",
+							"value": "INVOKE"
+						},
+						{
+							"key": "host",
+							"value": "https://5b05a7f57cc4.ngrok.io"
+						},
+						{
+							"key": "script",
+							"value": "sales_lead_automation_API"
+						},
+						{
+							"key": "unlockMachine",
+							"value": "False"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RPAForwarderAsyncRemoteINVOKE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(202);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"var print = function(s){\r",
+							"  tests[s] = true;  \r",
+							"};\r",
+							"\r",
+							"print(\"responseJson: \" + JSON.stringify(responseJson));\r",
+							"print(\"responseJson.requestId: \" + responseJson.out_message);\r",
+							"\r",
+							"postman.clearEnvironmentVariable(\"requestId\");\r",
+							"postman.setEnvironmentVariable(\"requestId\", responseJson.out_message);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "nedflanders",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Porker01!",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mode\": \"INVOKE\",\r\n    \"postcode\": \"HP137AD\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rpapi.eu-gb.mybluemix.net/runasync?host={{rpaComputer}}&script=Roberto&unlockMachine=False",
+					"protocol": "https",
+					"host": [
+						"rpapi",
+						"eu-gb",
+						"mybluemix",
+						"net"
+					],
+					"path": [
+						"runasync"
+					],
+					"query": [
+						{
+							"key": "host",
+							"value": "{{rpaComputer}}"
+						},
+						{
+							"key": "script",
+							"value": "Roberto"
+						},
+						{
+							"key": "unlockMachine",
+							"value": "False"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RPAForwarderAsyncRemoteRETRIEVE",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "nedflanders",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Porker01!",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mode\": \"RETRIEVE\",\r\n    \"requestId\": \"{{requestId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rpapi.eu-gb.mybluemix.net/runasync?host={{rpaComputer}}&script=Roberto&unlockMachine=False",
+					"protocol": "https",
+					"host": [
+						"rpapi",
+						"eu-gb",
+						"mybluemix",
+						"net"
+					],
+					"path": [
+						"runasync"
+					],
+					"query": [
+						{
+							"key": "host",
+							"value": "{{rpaComputer}}"
+						},
+						{
+							"key": "script",
+							"value": "Roberto"
+						},
+						{
+							"key": "unlockMachine",
+							"value": "False"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RPAForwarderSyncLocal",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "nedflanders",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Porker01!",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rpa_api_key_param\": \"tesla\",\r\n    \"first_name\": \"Burt\",\r\n    \"last_name\": \"Flanders\",\r\n    \"job_title\": \"IT\",\r\n    \"company\": \"IBM\",\r\n    \"client_address\": \"44 Neuse Road\",\r\n    \"client_city\": \"Springfield\",\r\n    \"client_state\": \"NC\",\r\n    \"interest\": \"RPA\",\r\n    \"followup\": \"Y\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/runsync?host={{rpaComputer}}&script=sales_lead_automation_API&unlockMachine=False",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"runsync"
+					],
+					"query": [
+						{
+							"key": "host",
+							"value": "{{rpaComputer}}"
+						},
+						{
+							"key": "script",
+							"value": "sales_lead_automation_API"
+						},
+						{
+							"key": "unlockMachine",
+							"value": "False"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RPAForwarderAsyncLocalInvoke",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(202);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"var print = function(s){\r",
+							"  tests[s] = true;  \r",
+							"};\r",
+							"\r",
+							"print(\"responseJson: \" + JSON.stringify(responseJson));\r",
+							"print(\"responseJson.requestId: \" + responseJson.out_message);\r",
+							"\r",
+							"postman.clearEnvironmentVariable(\"requestId\");\r",
+							"postman.setEnvironmentVariable(\"requestId\", responseJson.out_message);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "nedflanders",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Porker01!",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mode\": \"INVOKE\",\r\n    \"rpa_api_key_param\": \"tesla\",\r\n    \"first_name\": \"Burt\",\r\n    \"last_name\": \"Flanders\",\r\n    \"job_title\": \"IT\",\r\n    \"company\": \"IBM\",\r\n    \"client_address\": \"44 Neuse Road\",\r\n    \"client_city\": \"Springfield\",\r\n    \"client_state\": \"NC\",\r\n    \"interest\": \"RPA\",\r\n    \"followup\": \"Y\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/runasync?host=http://8101-88-104-124-115.ngrok.io&script=sales_lead_automation_API&unlockMachine=False",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"runasync"
+					],
+					"query": [
+						{
+							"key": "host",
+							"value": "http://8101-88-104-124-115.ngrok.io"
+						},
+						{
+							"key": "script",
+							"value": "sales_lead_automation_API"
+						},
+						{
+							"key": "unlockMachine",
+							"value": "False"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RPAForwarderAsyncLocalRetrieve",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "nedflanders",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Porker01!",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mode\": \"RETRIEVE\",\r\n    \"requestId\": \"{{requestId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/runasync?host={{RPA_COMPUTER}}&script=sales_lead_automation_API&unlockMachine=False",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"runasync"
+					],
+					"query": [
+						{
+							"key": "host",
+							"value": "{{RPA_COMPUTER}}"
+						},
+						{
+							"key": "script",
+							"value": "sales_lead_automation_API"
+						},
+						{
+							"key": "unlockMachine",
+							"value": "False"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
