@@ -1,0 +1,109 @@
+
+	Öª†\BÿIÅä©≠•‰Ù©ê6// This WAL script demonstrates how to validate the api_key passed as input to the bot script
+// The script compares the api_key defined in the system vault to the passed in key.
+// If they do not match then a 401 Authentication Error is returned.
+//
+// Input parameter  rpa_api_key_param contains a secret key to protect the API from unauthorized use
+defVar --name rpa_api_key_param --type String --value tesla --parameter
+defVar --name first_name --type String --value Ned --parameter
+defVar --name last_name --type String --value Flanders --parameter
+defVar --name job_title --type String --value "IT Engineer" --parameter
+defVar --name company --type String --value IBM --parameter
+defVar --name email --type String --value "ned.flanders@ibm.com" --parameter
+defVar --name phone --type String --value 687678678678 --parameter
+defVar --name client_address --type String --value "87 Princeton Av., Springfield" --parameter
+defVar --name client_city --type String --value Raliegh --parameter
+defVar --name client_zipcode --type String --value 89897897 --parameter
+defVar --name interest --type String --value 8 --parameter
+defVar --name followup --type String --value Yes --parameter
+defVar --name client_state --type String --value "North Carolina" --parameter
+defVar --name out_code --type Numeric --value 0 --output
+defVar --name out_type --type String --value SUCCESS --output
+defVar --name out_message --type String --value OK --output
+defVar --name rpa_api_key_vault --type String
+defVar --name dummyValue --type SecureString
+defVar --name retVal --type Boolean
+
+
+goSub --label validateApiServiceAccount
+if --left "${out_code}" --operator "Equal_To" --right 0
+	
+	goSub --label login
+	goSub --label insertData
+	
+	webClose --name web01
+	
+	setVar --name "${out_message}" --value OK
+endIf
+
+beginSub --name InsertLeadData
+	webSet --value "${first_name}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(1) > div:nth-child(1) > div > input" --simulatehuman
+	webSet --value "${last_name}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(1) > div:nth-child(2) > div > input" --simulatehuman
+	webSet --value "${email}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(1) > div:nth-child(3) > div > input" --simulatehuman
+	webSet --value "${job_title}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(2) > div:nth-child(1) > div > input" --simulatehuman
+	webSet --value "${company}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(2) > div:nth-child(2) > div > input" --simulatehuman
+	webSet --value "${phone}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(2) > div:nth-child(3) > div > input" --simulatehuman
+	webSet --value "${client_address}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(3) > div:nth-child(1) > div > input" --simulatehuman
+	webSet --value "${client_city}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(3) > div:nth-child(2) > div > input" --simulatehuman
+	webSet --value "${client_state}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(3) > div:nth-child(3) > div > input" --simulatehuman
+	webSet --value "${client_zipcode}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(3) > div:nth-child(4) > div > input" --simulatehuman
+	webSet --value "${interest}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(4) > div.col-md-6 > div > input" --simulatehuman
+	webSet --value "${followup}" --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(4) > div:nth-child(2) > div > input" --simulatehuman
+	if --left "${followup}" --operator "Equal_To" --right Yes
+		delay --timeout "00:00:01.2000000"
+		webClick --selector "CssSelector" --css "body > div > div.col-md-10 > div > div.container-fluid.ng-scope > div:nth-child(1) > div > form > div:nth-child(4) > div:nth-child(2) > div > input" --simulatehuman
+	endIf
+	
+// Click Submit
+	webClick --selector "CssSelector" --css ".btn" --simulatehuman
+	delay --timeout "00:00:01.2000000"
+endSub
+
+beginSub --name login
+// Login
+	webStart --name web01 --type "Chrome"
+	webNavigate --url "http://jk-automation.mybluemix.net"
+	webSet --value username --selector "CssSelector" --css "body > div:nth-child(4) > form > div:nth-child(1) > input"
+	webSet --value password10 --selector "CssSelector" --css "body > div:nth-child(4) > form > div.form-group > input"
+	
+endSub
+
+
+beginSub --name insertData
+	webClick --selector "CssSelector" --css "body > div:nth-child(4) > form > div:nth-child(3) > input"
+// Select leads
+	webClick --selector "CssSelector" --css "body > div > div.col-md-2.leftNavColumn > div > a:nth-child(2)"
+	logMessage --message "First Name: ${first_name}\r\nFollow up: ${followup}" --type "Info"
+	
+// Set sales leads input fields
+	delay --timeout "00:00:01.2000000"
+	goSub --label InsertLeadData
+	
+	webClick --selector "XPath" --xpath "//*[@id=\"#bs-top-navbar-collapse-1\"]/ul[2]/li/ul/li[2]/a"
+	
+endSub
+
+beginSub --name validateApiServiceAccount
+	
+	getVaultItem --name RPA_API_KEY --system  retVal=success rpa_api_key_vault=userName dummyValue=password
+	
+	if --left "${retVal}" --operator "Is_True" --negate
+		
+		logMessage --message "Failed to  get creds" --type "Info"
+		
+		setVar --name "${out_code}" --value 401
+		setVar --name "${out_type}" --value ERROR
+		setVar --name "${out_message}" --value "Authentication Error. RPA_API_KEY not found in system Vault"
+		return
+	endIf
+	
+	if --left "${rpa_api_key_vault}" --operator "Equal_To" --right "${rpa_api_key_param}" --negate
+		
+		logMessage --message "Failed authorization" --type "Info"
+		
+		setVar --name "${out_code}" --value 401
+		setVar --name "${out_type}" --value ERROR
+		setVar --name "${out_message}" --value "Authentication Error. RPA_API_KEY does not match - Expected ${rpa_api_key_vault} but received ${rpa_api_key_param}"
+		return
+	endIf
+endSub"	í??æ[ôF≤‡¿”`~#*21.0.0.0

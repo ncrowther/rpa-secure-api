@@ -2,7 +2,11 @@ swagger: '2.0'
 info:
   version: '1.0.0'
   title: RPA API
-  description: The purpose of this API is to present an authenticated interface to invoke any bot script.  It  enforces authentication and allows loopback to simulate executing a RPA bot when an RPA environment is not available
+  description: This API presents an authenticated interface to invoke bot scripts both synchronously and asynchronously.  Authentication is enforced through Basic Auth (username/password).  Authentication is managed through a nodejs server script which has to be deployed in the DMZ. On invocation of the API, the server script checks the credentials against a LDAP database and if authenticated, forwards on the request to the specified RPA computer behind a firewall. The API has a loopback setting to simulate an RPA bot when an RPA environment is not available. Examples and labs using the API found here;
+    <br><br>[Git Repo](https://github.com/ncrowther/rpa-secure-gateway.git)
+    <br>[Presentation](/RPAWithAppConnect.pdf")
+    <br>[Lab Guide](/labguide.pdf")
+    <br>[Video](https://youtu.be/_BL6wobZlJ8")
   contact:
     email: ncrowther@uk.ibm.com
 host: rpapi.eu-gb.mybluemix.net
@@ -20,9 +24,9 @@ securityDefinitions:
 security:
   - basicAuth: []
 paths:
-  /run:
+  /runsync:
     post:
-      description: Runs a script on a RPA agent specified in the URL.  All requests are authenticated using Basic Auth.  These credentials are validated against an LDAP server
+      description: Synchronously runs a script on a RPA agent specified in the URL.  All requests are authenticated using Basic Auth.
       summary: script
       tags:
       - RPA API
@@ -36,11 +40,11 @@ paths:
         required: true
         type: string
         description: Bot script name to run.  This script must be published on the tenant belonging to the host
-      - name: host
+      - name: rpaAgentUrl
         in: query
         required: true
         type: string
-        description: URL of the RPA agent. If host is LOOPBACK then 202 always returned to simulate a succesful bot run.  If host is a URL, it must point to an RPA agent.  It can point to either port 8099 (Direct) or 8096 (Broker). Script parameters are passed in the request body.  See documentation https://www.ibm.com/docs/en/rpa/20.12?topic=bot-starting-bots-by-api-ca for more details
+        description: URL of the RPA agent. If set to LOOPBACK then 202 always returned to simulate a succesful bot run.  If a URL, it must point to an RPA agent.  It can point to either port 8099 (Direct) or 8096 (Broker). Script parameters are passed in the request body.  See documentation https://www.ibm.com/docs/en/rpa/20.12?topic=bot-starting-bots-by-api-ca for more details
       - name: unlockMachine
         in: query
         required: true
@@ -50,6 +54,48 @@ paths:
       responses:
         '202':
           $ref: '#/definitions/SuccessResponse'
+        '400':
+          $ref: '#/definitions/BadRequestResponse'
+        '404':
+          $ref: '#/definitions/NotFoundResponse'
+
+  /runasync:
+    post:
+      description: Asynchronously runs a script on a RPA agent (host) specified in the URL.  All requests are authenticated using Basic Auth.  This API must be invoked twice.  The initial call is with mode INVOKE to invoke the bot.  A request ID is returned in out_message.   This request ID is passed into the second invocation with mode RETRIEVE to fetch the results asynchronously.  Node that if the bot has not finished running the result returned from RETRIEVE will be PENDING.
+      summary: script
+      tags:
+      - RPA API
+      operationId: runAsyncScript
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: mode
+        in: query
+        required: true
+        type: string
+        description: Must be one of INVOKE or RETRIEVE
+      - name: script
+        in: query
+        required: true
+        type: string
+        description: Bot script name to run.  This script must be published on the rpaAgentUrl
+      - name: rpaAgentUrl
+        in: query
+        required: true
+        type: string
+        description: URL of the RPA agent. If set to LOOPBACK then 202 always returned to simulate a succesful bot run.  If a URL, it must point to an RPA agent.  It can point to either port 8099 (Direct) or 8096 (Broker). Script parameters are passed in the request body.  See documentation https://www.ibm.com/docs/en/rpa/20.12?topic=bot-starting-bots-by-api-ca for more details
+      - name: unlockMachine
+        in: query
+        required: true
+        type: string
+        description: True if unlock False otherwise
+      - $ref: '#/parameters/RequestBody'
+      responses:
+        '202':
+          $ref: '#/definitions/SuccessResponse'
+        '200':
+          $ref: '#/definitions/AsyncSuccessResponse'
         '400':
           $ref: '#/definitions/BadRequestResponse'
         '404':
@@ -67,7 +113,7 @@ definitions:
   SuccessResponse:
     title: SuccessResponse
     type: object
-    description: Success Response
+    description: Accepted
     properties:
       out_code:
         type: integer
@@ -77,6 +123,24 @@ definitions:
       out_type:
         type: string
         description: Type of response. Either SUCCESS or FAIL
+        example: SUCCESS
+      out_message:
+        type: string
+        description: Description of response
+        example: OK
+  AsyncSuccessResponse:
+    title: AsyncSuccessResponse
+    type: object
+    description: Asynchronous Success Response
+    properties:
+      out_code:
+        type: integer
+        format: int32
+        description: zero for success, negative for failure
+        example: 0
+      out_type:
+        type: string
+        description: Type of response. Either SUCCESS, FAIL or PENDING
         example: SUCCESS
       out_message:
         type: string
@@ -127,7 +191,7 @@ definitions:
 
 tags:
 - name: IBM RPA API
-  description: Executes scripts on specified RPA agents
+  description: Synchronous or asynchronous execution of an RPA script.
   externalDocs:
     url: http://localhost:8080/docs
     description: Find out more

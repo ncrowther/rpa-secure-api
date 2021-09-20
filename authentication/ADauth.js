@@ -5,8 +5,7 @@ const ldap = require('ldapjs')
 
 function auth (clientId, clientPassword) {
   return new Promise(function (resolve, reject) {
-
-    console.log(`[ADauth] FAILED: ${clientId}; pw: ${clientPassword}`)
+    console.log('LDAP Authentication')
 
     // const SERVER_URL = 'ldap://ldap.forumsys.com'
     const SERVER_URL = 'ldap://ldap.jumpcloud.com'
@@ -44,8 +43,8 @@ function auth (clientId, clientPassword) {
       if (err) {
         result += 'LDAP bind FAILED'
         console.log(`[ADauth] ${result}`)
-        client.unbind(function (error) { if (error) { reject('{"errorcode": 001, "error": "Initial Bind failed"}')}})
-        reject(new Error('BIND FAILED'))
+        // client.unbind(function (error) { if (error) { Error('BIND FAILED')}}
+        reject(Error('BIND FAILED'))
       } else {
         result += 'LDAP bind succeessful'
         console.log(`[ADauth] ${result}`)
