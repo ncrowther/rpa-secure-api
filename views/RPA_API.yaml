@@ -4,9 +4,9 @@ info:
   title: RPA API
   description: This API presents an authenticated interface to invoke bot scripts both synchronously and asynchronously.  Authentication is enforced through Basic Auth (username/password).  Authentication is managed through a nodejs server script which has to be deployed in the DMZ. On invocation of the API, the server script checks the credentials against a LDAP database and if authenticated, forwards on the request to the specified RPA computer behind a firewall. The API has a loopback setting to simulate an RPA bot when an RPA environment is not available. Examples and labs using the API found here;
     <br><br>[Git Repo](https://github.com/ncrowther/rpa-secure-gateway.git)
-    <br>[Presentation](/RPAWithAppConnect.pdf")
-    <br>[Lab Guide](/labguide.pdf")
-    <br>[Video](https://youtu.be/_BL6wobZlJ8")
+    <br>[Presentation](/RPAWithAppConnect.pdf)
+    <br>[Lab Guide](/labguide.pdf)
+    <br>[Video](https://youtu.be/_BL6wobZlJ8)
   contact:
     email: ncrowther@uk.ibm.com
 host: rpapi.eu-gb.mybluemix.net
@@ -30,7 +30,7 @@ paths:
       summary: script
       tags:
       - RPA API
-      operationId: runScript
+      operationId: runSyncScript
       deprecated: false
       produces:
       - application/json

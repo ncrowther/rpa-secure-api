@@ -61,7 +61,7 @@ app.post('/runsync', function (req, res) {
   if (rpaAgentUrl.toUpperCase() === 'LOOPBACK') {
     const response = constructResponse(0, 'SUCCESS', 'OK')
     console.log(`Response: ${response}`)
-    res.status(202).send(response)
+    res.status(200).send(response)
     return
   }
 
@@ -105,7 +105,7 @@ app.post('/runsync', function (req, res) {
       .then(postRes => {
         console.log(`Response: ${postRes.status}`)
         console.log(`Response: ${postRes.data}`)
-        res.status(202).send(postRes.data)
+        res.status(200).send(postRes.data)
       })
       .catch(error => {
         console.error(error)
@@ -169,8 +169,8 @@ app.post('/runasync', function (req, res) {
     return
   }
 
-  if (rpaAgentUrl.toUpperCase() === 'LOOPBACK') {
-    const response = constructResponse(0, 'SUCCESS', 'Loopback OK')
+  if ((rpaAgentUrl.toUpperCase() === 'LOOPBACK') && (mode === INVOKE)) {
+    const response = constructResponse(0, 'PENDING', 'Pending bot completion')
     console.log(`Response: ${response}`)
     res.status(202).send(response)
     return

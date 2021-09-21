@@ -721,8 +721,8 @@ margin-bottom: 20px;
                     <li data-group="RPAAPI" data-name="runAsyncScript" class="">
                       <a href="#api-RPAAPI-runAsyncScript">runAsyncScript</a>
                     </li>
-                    <li data-group="RPAAPI" data-name="runScript" class="">
-                      <a href="#api-RPAAPI-runScript">runScript</a>
+                    <li data-group="RPAAPI" data-name="runSyncScript" class="">
+                      <a href="#api-RPAAPI-runSyncScript">runSyncScript</a>
                     </li>
           </ul>
         </nav>
@@ -739,7 +739,7 @@ margin-bottom: 20px;
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
               <div class="app-desc">Version: 1.0.0</div>
             <hr>
-            <div>This API presents an authenticated interface to invoke bot scripts both synchronously and asynchronously.  Authentication is enforced through Basic Auth (username/password).  Authentication is managed through a nodejs server script which has to be deployed in the DMZ. On invocation of the API, the server script checks the credentials against a LDAP database and if authenticated, forwards on the request to the specified RPA computer behind a firewall. The API has a loopback setting to simulate an RPA bot when an RPA environment is not available. Examples and labs using the API found here; <br><br><a href="https://github.com/ncrowther/rpa-secure-gateway.git">Git Repo</a> <br><a href="/RPAWithAppConnect.pdf&quot;">Presentation</a> <br><a href="/labguide.pdf&quot;">Lab Guide</a> <br><a href="https://youtu.be/_BL6wobZlJ8&quot;">Video</a></div>
+            <div>This API presents an authenticated interface to invoke bot scripts both synchronously and asynchronously.  Authentication is enforced through Basic Auth (username/password).  Authentication is managed through a nodejs server script which has to be deployed in the DMZ. On invocation of the API, the server script checks the credentials against a LDAP database and if authenticated, forwards on the request to the specified RPA computer behind a firewall. The API has a loopback setting to simulate an RPA bot when an RPA environment is not available. Examples and labs using the API found here; <br><br><a href="https://github.com/ncrowther/rpa-secure-gateway.git">Git Repo</a> <br><a href="/RPAWithAppConnect.pdf">Presentation</a> <br><a href="/labguide.pdf">Lab Guide</a> <br><a href="https://youtu.be/_BL6wobZlJ8">Video</a></div>
           </div>
         </div>
         <div id="sections">
@@ -1202,10 +1202,10 @@ $(document).ready(function() {
                         </article>
                       </div>
                       <hr>
-                    <div id="api-RPAAPI-runScript">
-                      <article id="api-RPAAPI-runScript-0" data-group="User" data-name="runScript" data-version="0">
+                    <div id="api-RPAAPI-runSyncScript">
+                      <article id="api-RPAAPI-runSyncScript-0" data-group="User" data-name="runSyncScript" data-version="0">
                         <div class="pull-left">
-                          <h1>runScript</h1>
+                          <h1>runSyncScript</h1>
                           <p>script</p>
                         </div>
                         <div class="pull-right"></div>
@@ -1219,24 +1219,24 @@ $(document).ready(function() {
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-RPAAPI-runScript-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-RPAAPI-runScript-0-java">Java</a></li>
-                          <li class=""><a href="#examples-RPAAPI-runScript-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-RPAAPI-runScript-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-RPAAPI-runScript-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-RPAAPI-runScript-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-RPAAPI-runScript-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-RPAAPI-runScript-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-RPAAPI-runScript-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-RPAAPI-runScript-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-RPAAPI-runScript-0-python">Python</a></li>
+                          <li class="active"><a href="#examples-RPAAPI-runSyncScript-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-RPAAPI-runSyncScript-0-java">Java</a></li>
+                          <li class=""><a href="#examples-RPAAPI-runSyncScript-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-RPAAPI-runSyncScript-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-RPAAPI-runSyncScript-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-RPAAPI-runSyncScript-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-RPAAPI-runSyncScript-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-RPAAPI-runSyncScript-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-RPAAPI-runSyncScript-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-RPAAPI-runSyncScript-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-RPAAPI-runSyncScript-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-RPAAPI-runScript-0-curl">
+                          <div class="tab-pane active" id="examples-RPAAPI-runSyncScript-0-curl">
                             <pre class="prettyprint"><code class="language-bsh">curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Basic [[basicHash]]" "https://rpapi.eu-gb.mybluemix.net/runsync?script=&rpaAgentUrl=&unlockMachine="</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-RPAAPI-runScript-0-java">
+                          <div class="tab-pane" id="examples-RPAAPI-runSyncScript-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
 import io.swagger.client.auth.*;
 import io.swagger.client.model.*;
@@ -1261,16 +1261,16 @@ public class RPAAPIApiExample {
         String unlockMachine = unlockMachine_example; // String | True if unlock False otherwise
         RequestBodySchema requestBody = ; // RequestBodySchema | Default
         try {
-            apiInstance.runScript(script, rpaAgentUrl, unlockMachine, requestBody);
+            apiInstance.runSyncScript(script, rpaAgentUrl, unlockMachine, requestBody);
         } catch (ApiException e) {
-            System.err.println("Exception when calling RPAAPIApi#runScript");
+            System.err.println("Exception when calling RPAAPIApi#runSyncScript");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-RPAAPI-runScript-0-android">
+                          <div class="tab-pane" id="examples-RPAAPI-runSyncScript-0-android">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.RPAAPIApi;
 
 public class RPAAPIApiExample {
@@ -1282,19 +1282,19 @@ public class RPAAPIApiExample {
         String unlockMachine = unlockMachine_example; // String | True if unlock False otherwise
         RequestBodySchema requestBody = ; // RequestBodySchema | Default
         try {
-            apiInstance.runScript(script, rpaAgentUrl, unlockMachine, requestBody);
+            apiInstance.runSyncScript(script, rpaAgentUrl, unlockMachine, requestBody);
         } catch (ApiException e) {
-            System.err.println("Exception when calling RPAAPIApi#runScript");
+            System.err.println("Exception when calling RPAAPIApi#runSyncScript");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-RPAAPI-runScript-0-groovy">
+  <div class="tab-pane" id="examples-RPAAPI-runSyncScript-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-RPAAPI-runScript-0-objc">
+                            <div class="tab-pane" id="examples-RPAAPI-runSyncScript-0-objc">
                               <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
 // Configure HTTP basic authorization (authentication scheme: basicAuth)
 [apiConfig setUsername:@"YOUR_USERNAME"];
@@ -1308,7 +1308,7 @@ RequestBodySchema *requestBody = ; // Default
 RPAAPIApi *apiInstance = [[RPAAPIApi alloc] init];
 
 // script
-[apiInstance runScriptWith:script
+[apiInstance runSyncScriptWith:script
     rpaAgentUrl:rpaAgentUrl
     unlockMachine:unlockMachine
     requestBody:requestBody
@@ -1320,7 +1320,7 @@ RPAAPIApi *apiInstance = [[RPAAPIApi alloc] init];
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-RPAAPI-runScript-0-javascript">
+                            <div class="tab-pane" id="examples-RPAAPI-runSyncScript-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var RpaApi = require('rpa_api');
 var defaultClient = RpaApi.ApiClient.instance;
 
@@ -1347,14 +1347,14 @@ var callback = function(error, data, response) {
     console.log('API called successfully.');
   }
 };
-api.runScript(script, rpaAgentUrl, unlockMachine, requestBody, callback);
+api.runSyncScript(script, rpaAgentUrl, unlockMachine, requestBody, callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-RPAAPI-runScript-0-angular">
+                            <!--<div class="tab-pane" id="examples-RPAAPI-runSyncScript-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-RPAAPI-runScript-0-csharp">
+                            <div class="tab-pane" id="examples-RPAAPI-runSyncScript-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using IO.Swagger.Api;
@@ -1363,7 +1363,7 @@ using IO.Swagger.Model;
 
 namespace Example
 {
-    public class runScriptExample
+    public class runSyncScriptExample
     {
         public void main()
         {
@@ -1381,11 +1381,11 @@ namespace Example
             try
             {
                 // script
-                apiInstance.runScript(script, rpaAgentUrl, unlockMachine, requestBody);
+                apiInstance.runSyncScript(script, rpaAgentUrl, unlockMachine, requestBody);
             }
             catch (Exception e)
             {
-                Debug.Print("Exception when calling RPAAPIApi.runScript: " + e.Message );
+                Debug.Print("Exception when calling RPAAPIApi.runSyncScript: " + e.Message );
             }
         }
     }
@@ -1393,7 +1393,7 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-RPAAPI-runScript-0-php">
+                            <div class="tab-pane" id="examples-RPAAPI-runSyncScript-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
@@ -1408,14 +1408,14 @@ $unlockMachine = unlockMachine_example; // String | True if unlock False otherwi
 $requestBody = ; // RequestBodySchema | Default
 
 try {
-    $api_instance->runScript($script, $rpaAgentUrl, $unlockMachine, $requestBody);
+    $api_instance->runSyncScript($script, $rpaAgentUrl, $unlockMachine, $requestBody);
 } catch (Exception $e) {
-    echo 'Exception when calling RPAAPIApi->runScript: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling RPAAPIApi->runSyncScript: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-RPAAPI-runScript-0-perl">
+                            <div class="tab-pane" id="examples-RPAAPI-runSyncScript-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::RPAAPIApi;
@@ -1431,14 +1431,14 @@ my $unlockMachine = unlockMachine_example; # String | True if unlock False other
 my $requestBody = WWW::SwaggerClient::Object::RequestBodySchema->new(); # RequestBodySchema | Default
 
 eval { 
-    $api_instance->runScript(script => $script, rpaAgentUrl => $rpaAgentUrl, unlockMachine => $unlockMachine, requestBody => $requestBody);
+    $api_instance->runSyncScript(script => $script, rpaAgentUrl => $rpaAgentUrl, unlockMachine => $unlockMachine, requestBody => $requestBody);
 };
 if ($@) {
-    warn "Exception when calling RPAAPIApi->runScript: $@\n";
+    warn "Exception when calling RPAAPIApi->runSyncScript: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-RPAAPI-runScript-0-python">
+                            <div class="tab-pane" id="examples-RPAAPI-runSyncScript-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import swagger_client
@@ -1458,9 +1458,9 @@ requestBody =  # RequestBodySchema | Default
 
 try: 
     # script
-    api_instance.run_script(script, rpaAgentUrl, unlockMachine, requestBody)
+    api_instance.run_sync_script(script, rpaAgentUrl, unlockMachine, requestBody)
 except ApiException as e:
-    print("Exception when calling RPAAPIApi->runScript: %s\n" % e)</code></pre>
+    print("Exception when calling RPAAPIApi->runSyncScript: %s\n" % e)</code></pre>
                             </div>
                           </div>
 
@@ -1500,12 +1500,12 @@ $(document).ready(function() {
   }
 
   var view = new JSONSchemaView(schema,2,{isBodyParam: true});
-  var result = $('#d2e199_runScript_requestBody');
+  var result = $('#d2e199_runSyncScript_requestBody');
   result.empty();
   result.append(view.render());
 });
 </script>
-<div id="d2e199_runScript_requestBody"></div>
+<div id="d2e199_runSyncScript_requestBody"></div>
 </td>
 </tr>
 
@@ -1522,7 +1522,7 @@ $(document).ready(function() {
 <td>
 
 
-    <div id="d2e199_runScript_script">
+    <div id="d2e199_runSyncScript_script">
         <div class="json-schema-view">
             <div class="primitive">
                 <span class="type">
@@ -1545,7 +1545,7 @@ $(document).ready(function() {
 <td>
 
 
-    <div id="d2e199_runScript_rpaAgentUrl">
+    <div id="d2e199_runSyncScript_rpaAgentUrl">
         <div class="json-schema-view">
             <div class="primitive">
                 <span class="type">
@@ -1568,7 +1568,7 @@ $(document).ready(function() {
 <td>
 
 
-    <div id="d2e199_runScript_unlockMachine">
+    <div id="d2e199_runSyncScript_unlockMachine">
         <div class="json-schema-view">
             <div class="primitive">
                 <span class="type">
