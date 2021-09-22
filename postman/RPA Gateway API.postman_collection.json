@@ -66,7 +66,7 @@
 			"response": []
 		},
 		{
-			"name": "RPAForwarderRemote",
+			"name": "RPAForwarderSyncRemote",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -95,7 +95,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://rpapi.eu-gb.mybluemix.net/runasync?mode=INVOKE&host=https://5b05a7f57cc4.ngrok.io&script=sales_lead_automation_API&unlockMachine=False",
+					"raw": "https://rpapi.eu-gb.mybluemix.net/runsync?rpaAgentUrl={{rpaComputer}}&script=sales_lead_automation_API&unlockMachine=False",
 					"protocol": "https",
 					"host": [
 						"rpapi",
@@ -104,16 +104,12 @@
 						"net"
 					],
 					"path": [
-						"runasync"
+						"runsync"
 					],
 					"query": [
 						{
-							"key": "mode",
-							"value": "INVOKE"
-						},
-						{
-							"key": "host",
-							"value": "https://5b05a7f57cc4.ngrok.io"
+							"key": "rpaAgentUrl",
+							"value": "{{rpaComputer}}"
 						},
 						{
 							"key": "script",
@@ -160,13 +156,13 @@
 					"type": "basic",
 					"basic": [
 						{
-							"key": "username",
-							"value": "nedflanders",
+							"key": "password",
+							"value": "RPA4Ever!",
 							"type": "string"
 						},
 						{
-							"key": "password",
-							"value": "Porker01!",
+							"key": "username",
+							"value": "rpaserviceaccount",
 							"type": "string"
 						}
 					]
@@ -175,7 +171,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"mode\": \"INVOKE\",\r\n    \"postcode\": \"HP137AD\"\r\n}",
+					"raw": "{\r\n    \"rpa_api_key_param\": \"tesla\",\r\n    \"first_name\": \"Burt\",\r\n    \"last_name\": \"Flanders\",\r\n    \"job_title\": \"IT\",\r\n    \"company\": \"IBM\",\r\n    \"client_address\": \"44 Neuse Road\",\r\n    \"client_city\": \"Springfield\",\r\n    \"client_state\": \"NC\",\r\n    \"interest\": \"RPA\",\r\n    \"followup\": \"Y\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -183,7 +179,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://rpapi.eu-gb.mybluemix.net/runasync?host={{rpaComputer}}&script=Roberto&unlockMachine=False",
+					"raw": "https://rpapi.eu-gb.mybluemix.net/runasync?mode=INVOKE&rpaAgentUrl={{rpaComputer}}&script=sales_lead_automation_API&unlockMachine=False",
 					"protocol": "https",
 					"host": [
 						"rpapi",
@@ -196,12 +192,16 @@
 					],
 					"query": [
 						{
-							"key": "host",
+							"key": "mode",
+							"value": "INVOKE"
+						},
+						{
+							"key": "rpaAgentUrl",
 							"value": "{{rpaComputer}}"
 						},
 						{
 							"key": "script",
-							"value": "Roberto"
+							"value": "sales_lead_automation_API"
 						},
 						{
 							"key": "unlockMachine",
@@ -234,7 +234,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"mode\": \"RETRIEVE\",\r\n    \"requestId\": \"{{requestId}}\"\r\n}",
+					"raw": "{\r\n    \"requestId\": \"{{requestId}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -242,7 +242,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://rpapi.eu-gb.mybluemix.net/runasync?host={{rpaComputer}}&script=Roberto&unlockMachine=False",
+					"raw": "https://rpapi.eu-gb.mybluemix.net/runasync?mode=RETRIEVE&rpaAgentUrl={{rpaComputer}}&script=sales_lead_automation_API&unlockMachine=False",
 					"protocol": "https",
 					"host": [
 						"rpapi",
@@ -255,12 +255,16 @@
 					],
 					"query": [
 						{
-							"key": "host",
+							"key": "mode",
+							"value": "RETRIEVE"
+						},
+						{
+							"key": "rpaAgentUrl",
 							"value": "{{rpaComputer}}"
 						},
 						{
 							"key": "script",
-							"value": "Roberto"
+							"value": "sales_lead_automation_API"
 						},
 						{
 							"key": "unlockMachine",
@@ -301,7 +305,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/runsync?host={{rpaComputer}}&script=sales_lead_automation_API&unlockMachine=False",
+					"raw": "http://localhost:3000/runsync?rpaAgentUrl={{rpaComputer}}&script=sales_lead_automation_API&unlockMachine=False",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -312,7 +316,7 @@
 					],
 					"query": [
 						{
-							"key": "host",
+							"key": "rpaAgentUrl",
 							"value": "{{rpaComputer}}"
 						},
 						{
@@ -375,7 +379,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"mode\": \"INVOKE\",\r\n    \"rpa_api_key_param\": \"tesla\",\r\n    \"first_name\": \"Burt\",\r\n    \"last_name\": \"Flanders\",\r\n    \"job_title\": \"IT\",\r\n    \"company\": \"IBM\",\r\n    \"client_address\": \"44 Neuse Road\",\r\n    \"client_city\": \"Springfield\",\r\n    \"client_state\": \"NC\",\r\n    \"interest\": \"RPA\",\r\n    \"followup\": \"Y\"\r\n}",
+					"raw": "{\r\n    \"rpa_api_key_param\": \"tesla\",\r\n    \"first_name\": \"Burt\",\r\n    \"last_name\": \"Flanders\",\r\n    \"job_title\": \"IT\",\r\n    \"company\": \"IBM\",\r\n    \"client_address\": \"44 Neuse Road\",\r\n    \"client_city\": \"Springfield\",\r\n    \"client_state\": \"NC\",\r\n    \"interest\": \"RPA\",\r\n    \"followup\": \"Y\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -383,7 +387,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/runasync?host=http://8101-88-104-124-115.ngrok.io&script=sales_lead_automation_API&unlockMachine=False",
+					"raw": "http://localhost:3000/runasync?mode=INVOKE&rpaAgentUrl={{rpaComputer}}&script=sales_lead_automation_API&unlockMachine=False",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -394,8 +398,12 @@
 					],
 					"query": [
 						{
-							"key": "host",
-							"value": "http://8101-88-104-124-115.ngrok.io"
+							"key": "mode",
+							"value": "INVOKE"
+						},
+						{
+							"key": "rpaAgentUrl",
+							"value": "{{rpaComputer}}"
 						},
 						{
 							"key": "script",
@@ -443,7 +451,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"mode\": \"RETRIEVE\",\r\n    \"requestId\": \"{{requestId}}\"\r\n}",
+					"raw": "{\r\n    \"requestId\": \"{{requestId}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -451,7 +459,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/runasync?host={{RPA_COMPUTER}}&script=sales_lead_automation_API&unlockMachine=False",
+					"raw": "http://localhost:3000/runasync?mode=RETRIEVE&rpaAgentUrl={{rpaComputer}}&script=sales_lead_automation_API&unlockMachine=False",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -462,8 +470,12 @@
 					],
 					"query": [
 						{
-							"key": "host",
-							"value": "{{RPA_COMPUTER}}"
+							"key": "mode",
+							"value": "RETRIEVE"
+						},
+						{
+							"key": "rpaAgentUrl",
+							"value": "{{rpaComputer}}"
 						},
 						{
 							"key": "script",

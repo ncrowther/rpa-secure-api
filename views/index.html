@@ -696,11 +696,11 @@ margin-bottom: 20px;
   <script>
     // Script section to load models into a JS Var
     var defs = {}
-        defs["AsyncSuccessResponse"] = {"type":"object","properties":{"out_code":{"type":"integer","format":"int32","example":0,"description":"zero for success, negative for failure"},"out_type":{"type":"string","example":"SUCCESS","description":"Type of response. Either SUCCESS, FAIL or PENDING"},"out_message":{"type":"string","example":"OK","description":"Description of response"}},"title":"AsyncSuccessResponse","description":"Asynchronous Success Response"};
+        defs["AsyncSuccessResponse"] = {"type":"object","properties":{"out_code":{"type":"integer","format":"int32","example":0,"description":"zero for success, negative for failure"},"out_type":{"type":"string","example":"PENDING","description":"Type of response."},"out_message":{"type":"string","example":"836086af-a4fd-43a0-bc6c-3904e718e541","description":"Contains request ID to be used to fetch response in mode=RETRIEVE"}},"title":"AsyncSuccessResponse","description":"Accepted asynch request."};
         defs["BadRequestResponse"] = {"type":"object","properties":{"out_code":{"type":"integer","format":"int32","example":-1,"description":"zero for success, negative for failure"},"out_type":{"type":"string","example":"FAIL","description":"Type of response. Either SUCCESS or FAIL"},"out_message":{"type":"string","example":"Missing Parameter","description":"Description of failure"}},"title":"BadRequestResponse","description":"Bad Request Response"};
         defs["NotFoundResponse"] = {"type":"object","properties":{"out_code":{"type":"integer","format":"int32","example":-1,"description":"zero for success, negative for failure"},"out_type":{"type":"string","example":"FAIL","description":"Type of response. Either SUCCESS or FAIL"},"out_message":{"type":"string","example":"RPA Server not found","description":"Description of failure"}},"title":"NotFoundResponse","description":"Not Found Response"};
         defs["RequestBodySchema"] = {"type":"object","description":"Script Parameters","example":"{\n\tinputParameterName: inputParameterValue\n}"};
-        defs["SuccessResponse"] = {"type":"object","properties":{"out_code":{"type":"integer","format":"int32","example":0,"description":"zero for success, negative for failure"},"out_type":{"type":"string","example":"SUCCESS","description":"Type of response. Either SUCCESS or FAIL"},"out_message":{"type":"string","example":"OK","description":"Description of response"}},"title":"SuccessResponse","description":"Accepted"};
+        defs["SuccessResponse"] = {"type":"object","properties":{"out_code":{"type":"integer","format":"int32","example":0,"description":"zero for success, negative for failure"},"out_type":{"type":"string","example":"SUCCESS","description":"Type of response. Either SUCCESS or FAIL"},"out_message":{"type":"string","example":"OK","description":"Description of response"}},"title":"SuccessResponse","description":"OK"};
   </script>
 
   <div class="container-fluid">
@@ -739,7 +739,9 @@ margin-bottom: 20px;
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
               <div class="app-desc">Version: 1.0.0</div>
             <hr>
-            <div>This API presents an authenticated interface to invoke bot scripts both synchronously and asynchronously.  Authentication is enforced through Basic Auth (username/password).  Authentication is managed through a nodejs server script which has to be deployed in the DMZ. On invocation of the API, the server script checks the credentials against a LDAP database and if authenticated, forwards on the request to the specified RPA computer behind a firewall. The API has a loopback setting to simulate an RPA bot when an RPA environment is not available. Examples and labs using the API found here; <br><br><a href="https://github.com/ncrowther/rpa-secure-gateway.git">Git Repo</a> <br><a href="/RPAWithAppConnect.pdf">Presentation</a> <br><a href="/labguide.pdf">Lab Guide</a> <br><a href="https://youtu.be/_BL6wobZlJ8">Video</a></div>
+            <div><p>This API presents an authenticated interface to invoke bot scripts both synchronously and asynchronously.  Authentication is enforced through Basic Auth (username/password).  Authentication is managed through a nodejs server script which has to be deployed in the DMZ. On invocation of the API, the server script checks the credentials against a LDAP database and if authenticated, forwards on the request to the specified RPA computer behind a firewall. The API has a loopback setting to simulate an RPA bot when an RPA environment is not available. <img src="https://rpapi.eu-gb.mybluemix.net/Architecture.png" alt="Architecture" /></p>
+<p>Examples and labs- <br><br><a href="/RPAWithAppConnect.pdf">Presentation</a> <br><a href="/labguide.pdf">Lab Guide</a> <br><a href="https://youtu.be/_BL6wobZlJ8">Video</a> <br><a href="https://www.ibm.com/docs/en/rpa/21.0?topic=bot-starting-bots-by-api-call">IBM RPA Agent API</a> <br><a href="https://github.com/ncrowther/rpa-secure-gateway.git">Git Repo</a></p>
+</div>
           </div>
         </div>
         <div id="sections">
@@ -1590,7 +1592,7 @@ $(document).ready(function() {
                             </table>
 
                           <h2>Responses</h2>
-                            <h3> Status: 202 -  </h3>
+                            <h3> Status: 200 -  </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                             </ul>

@@ -170,9 +170,16 @@ app.post('/runasync', function (req, res) {
   }
 
   if ((rpaAgentUrl.toUpperCase() === 'LOOPBACK') && (mode === INVOKE)) {
-    const response = constructResponse(0, 'PENDING', 'Pending bot completion')
+    const response = constructResponse(0, 'PENDING', '836086af-a4fd-43a0-bc6c-3904e718e541')
     console.log(`Response: ${response}`)
     res.status(202).send(response)
+    return
+  }
+
+  if ((rpaAgentUrl.toUpperCase() === 'LOOPBACK') && (mode === RETRIEVE)) {
+    const response = constructResponse(0, 'SUCCESS', 'OK')
+    console.log(`Response: ${response}`)
+    res.status(200).send(response)
     return
   }
 
